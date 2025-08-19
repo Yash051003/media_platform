@@ -83,3 +83,26 @@ uvicorn app.main:app --reload
 #### Step 5: Extra Things :
 *Before Starting up the Database , Make sure you have the Postgreasql image installed in your local network
 *Example env file is also included in the project , I have pushed the .gitignore file too 
+
+
+## Task 2 : 
+
+### Media View Tracking & Analytics
+
+* The Click: It all starts when a user on the dashboard clicks the "Get Link" or "Stream" button. This single click actually triggers two actions in the background.
+
+* The Log: The first action is a quick, invisible request sent to our backend's /media/{id}/view endpoint. The server receives this request, automatically notes the user's IP address (like checking the return address on a letter), and saves it to the database with a timestamp.
+
+* The Report: Later, when an admin clicks the "Analytics" button, the backend gathers all the saved IP addresses for that media file. It counts them up, finds the unique ones, and sends this neat summary back to the frontend to be displayed in the analytics pop-up.
+
+
+
+
+## Task 3 :
+
+### Optimization & Security
+This project uses Redis to enhance both performance and security:
+
+Caching: The analytics endpoint is cached to reduce database load. When analytics for a media file are requested, the results are saved in Redis. Subsequent requests will hit the cache for a near-instant response. The cache is automatically cleared whenever a new view is logged for that file.
+
+Rate Limiting: The endpoint for logging media views (/media/{media_id}/view) is rate-limited. This prevents abuse and spam, ensuring that a single user cannot flood the system with view requests.
