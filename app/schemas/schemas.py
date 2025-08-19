@@ -1,8 +1,8 @@
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Dict, List
 
-# A new, simple schema for the owner details
+# A simple schema for the owner details
 class MediaOwnerResponse(BaseModel):
     id: int
     email: EmailStr
@@ -45,8 +45,6 @@ class MediaAssetResponse(BaseModel):
     type: str
     file_url: str
     created_at: datetime
-    # --- THIS IS THE KEY CHANGE ---
-    # Include the owner's details in the response
     owner: MediaOwnerResponse
     
     class Config:
@@ -55,3 +53,12 @@ class MediaAssetResponse(BaseModel):
 class StreamUrlResponse(BaseModel):
     stream_url: str
     expires_at: datetime
+
+# Analytics Schema
+class AnalyticsResponse(BaseModel):
+    total_views: int
+    unique_ips: int
+    views_per_day: Dict[str, int]
+    # --- THIS IS THE NEW FIELD ---
+    # Add a list to hold the unique IP addresses
+    unique_ip_list: List[str]
